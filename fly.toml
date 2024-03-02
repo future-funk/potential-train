@@ -1,0 +1,36 @@
+# fly.toml app configuration file generated for gorunner on 2024-03-01T23:29:07+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'gorunner'
+primary_region = 'ams'
+
+[build]
+  [build.args]
+    GO_VERSION = '1.21.1'
+
+[[services]]
+  internal_port = 8080
+  protocol = "tcp"
+
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = "80"
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = "443"
+
+  [[services.tcp_checks]]
+    interval = 10000
+    timeout = 2000
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
